@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taller maquetación web </title>
+    
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+
+
+    
+    <style>
+
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: rgb(82, 39, 151);
+}
+
+.container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form-row {
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+input, select {
+  width: 100%;
+  height: 40px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+input[type="submit"] {
+  background-color: #4CAF50;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+input[type="submit"]:hover {
+  background-color: #3e8e41;
+}
+
+.error {
+  color: red;
+}
+
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.container {
+  animation: slideIn 0.5s ease-in-out;
+}
+    </style>
+ 
+
+   
+
+    </head>
+<body>
+
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Inscripciones a Eventos</h2>
+        <form id="inscriptionForm">
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="documentType">Tipo Documento</label>
+              <select id="documentType" class="form-control" required>
+                <option value="">Seleccione...</option>
+                <option value="CC">Cédula de Ciudadanía</option>
+                <option value="TI">Tarjeta de Identidad</option>
+              </select>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="documentNumber">Número Documento</label>
+              <input type="text" class="form-control" id="documentNumber" required>
+              <small id="documentNumberHelp" class="form-text text-muted"></small>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="fullName">Nombre Completo</label>
+            <input type="text" class="form-control" id="fullName" required>
+          </div>
+          <div class="form-group">
+            <label for="birthDate">Fecha Nacimiento</label>
+            <input type="date" class="form-control" id="birthDate" required>
+            <small id="birthDateHelp" class="form-text text-muted"></small>
+          </div>
+          <div class="form-group">
+            <label for="eventSelect">Evento</label>
+            <select id="eventSelect" class="form-control" required>
+              <option value="">Seleccione un evento...</option>
+              <option value="salsa" data-price="100000">Salsa (COP 100.000)</option>
+              <option value="rock" data-price="200000">Rock (COP 200.000)</option>
+              <option value="popular" data-price="300000">Música Popular (COP 300.000)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="eventCost">Costo</label>
+            <input type="text" class="form-control" id="eventCost" readonly>
+          </div>
+          <div class="form-group">
+            <label for="promoCode">Código Promocional</label>
+            <input type="text" class="form-control" id="promoCode">
+          </div>
+          <div class="form-group">
+            <label for="totalToPay">Total a Pagar</label>
+            <input type="text" class="form-control" id="totalToPay" readonly>
+          </div>
+          <button   type="submit" class="btn btn-primary">Guardar</button>
+        </form>
+      </div>
+      
+      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+      <script>
+        $(document).ready(function() {
+          // Validaciones básicas
+          $('#documentNumber').on('input', function() {
+            let documentNumber = $(this).val();
+            if (documentNumber.length < 7 || documentNumber.length > 10) {
+              $('#documentNumberHelp').text('El número de documento debe tener entre 7 y 10 dígitos.').addClass('text-danger');
+            } else {
+              $('#documentNumberHelp').text('').removeClass('text-danger');
+            }
+          });
+      
+          $('#birthDate').on ('input', function() {
+            let birthDate = new Date($(this).val());
+            let today = new Date();
+            let age = today.getFullYear() - birthDate.getFullYear();
+            if (age < 15 || age > 18) {
+              $('#birthDateHelp').text('La edad debe estar entre 15 y 18 años.').addClass('text-danger');
+            } else {
+              $('#birthDateHelp').text('').removeClass('text-danger');
+            }
+          });
+      
+          // Evento seleccionado
+          $('#eventSelect').on('change', function() {
+            let selectedEvent = $(this).val();
+            let eventPrice = $(this).find('option:selected').data('price');
+            $('#eventCost').val(`COP ${eventPrice}`);
+            // Aplicar descuento si hay código promocional
+            let promoCode = $('#promoCode').val();
+            if (promoCode) {
+              let discount = eventPrice * 0.1; // 10% de descuento
+              let totalToPay = eventPrice - discount;
+              $('#totalToPay').val(`COP ${totalToPay}`);
+            } else {
+              $('#totalToPay').val(`COP ${eventPrice}`);
+            }
+          });
+      
+          // Validación al guardar
+          $('#inscriptionForm').on('submit', function(event) {
+            event.preventDefault();
+            let documentNumber = $('#documentNumber').val();
+            let fullName = $('#fullName').val();
+            let birthDate = $('#birthDate').val();
+            let eventSelect = $('#eventSelect').val();
+            let promoCode = $('#promoCode').val();
+            if (documentNumber && fullName && birthDate && eventSelect) {
+              // Guardar registro
+              console.log('Registro guardado con éxito!');
+            } else {
+              alert('Por favor, complete todos los campos obligatorios.');
+            }
+          });
+        });
+      </script>
+
+   
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp+G7niu735Sk7lN" crossorigin="anonymous"></script>
+    
+    
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+</body>
+</html>
